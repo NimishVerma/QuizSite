@@ -1,17 +1,1 @@
-#Quiz App
-
-Requirements: 
-	user reg
-		signup
-		login/logout
-	user profile
-		profile page
-		leaderboard
-	question database
-		Questions Table
-		Answers table
-		Quiz Table
-	quiz app
-		quiz page
-		quiz leaderboard
-		
+Integrating multiple apps to create a site for quizzing purposes with leaderboard and rankings.
