@@ -36,24 +36,26 @@
 	<div class="tab-content">
 		<div id="regtab" class="tab-pane fade text-primary">
 
-		
+	<form action="post">	
 	{% csrf_token %}
 		
 		{{ rform }}
-	
+
 
 
 	<button id="rbtn" type="button" class="btn btn-primary btn-lg ">Register!</button> 
+		</form>
 		</div>
 		<div id="logtab" class="tab-pane fade text-success" data-loading-text="Registering">
-		
+	<form action="post">
 	{% csrf_token %}
 		
 		{{ lform.as_p }}
-
+	
 
 		
 		<button id="lbtn" type="button" class="btn btn-primary btn-lg " data-loading-text="Logging in" 	>Login!</button> 
+			</form>
 		</div>
 	</div>
 </div>
@@ -81,6 +83,27 @@ $('#rbtn').click(function(){
 		}
 		
 	});
+});
+
+$('#lbtn').click(function(){
+var form_data = {
+			'username': $('#id_username').val(),
+			'passwd': $('#id_password').val()
+		}
+		$.post('/userlogin/', form_data, function (data, status) {
+			//console.log(data)
+			var dt = JSON.parse(data);
+			var login_status = dt.data.status;
+			console.log(login_status); 
+			if (login_status == 'success') {
+				alert("Logged In. Click Ok to go to Home");
+				window.location = '/';
+			}
+			else {
+				//console.log(login_status);
+				$('#msg').html(login_status + '\n Login Again!!');
+			}
+		});
 });
 
 </script>

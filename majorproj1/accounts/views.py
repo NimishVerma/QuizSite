@@ -39,3 +39,41 @@ def register_data(request):
 		resp['status'] = 'success'
 		return HttpResponse(json.dumps({'data':resp}))
 
+@csrf_exempt
+def user_login(request):
+	
+	resp = {
+		'status': ''
+	}
+
+	if not request.method == 'POST':
+		resp['status'] = 'Y U NO POST REQUEST?'
+		return HttpResponse(json.dumps({'data': resp}))
+
+	frm = LoginForm(request.POST)
+
+	if frm.is_valid():
+		print 'yes', frm.cleaned_data
+		uname = frm.cleaned_data['username']
+		ps = frm.cleaned_data['passwd']
+
+		u = authenticate(username=uname, password=ps)
+		print u
+
+		if u:
+			if u.is_active:
+				login(request, u)
+				print u
+				# ctx = {'user': u}
+				resp['status'] = 'success';
+				return HttpResponse(json.dumps({'data': resp}))
+				# return render(request, 'logged_in.html')#, ctx)
+			else:
+				resp['status'] = 'Deactivcated account';
+				return HttpResponse(json.dumps({'data': resp}))
+		else:
+			resp['status'] = 'Invalid User!';
+			return HttpResponse(json.dumps({'data': resp}))
+	
+	resp['status'] = 'Invalid Form Data!!';
+	return HttpResponse(json.dumps({'data': resp}))
