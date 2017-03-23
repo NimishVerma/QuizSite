@@ -50,15 +50,15 @@
 	<form action="post">
 	{% csrf_token %}
 		
-		{{ lform.as_p }}
+		{{ lform }}
 	
 
 		
-		<button id="lbtn" type="button" class="btn btn-primary btn-lg " data-loading-text="Logging in" 	>Login!</button> 
+		<button id="lbtn" type="button" class="btn btn-primary btn-lg ">Login!</button> 
 			</form>
 		</div>
 	</div>
-</div>
+	</div>
 
 
 
@@ -69,28 +69,34 @@ $('#rbtn').click(function(){
 	var form_data = {
 		'username' : $('#id_username').val(),
 		'password' : $('#id_password').val(),	
-		'name' : $('#id_name').val()
+		'name' : $('#id_name').val(),
+        'csrfmiddlewaretoken' : $('[name="csrfmiddlewaretoken"]').val()
 	}
-	$.post('/register_data/',form_data,function (data, status){
+	console.log(form_data)
+	$.post('/registerdata/',form_data,function (data, status){
+		console.log(data)
 		var dt = JSON.parse(data);
 		var reg_status = dt.data.status;
 		if(reg_status == 'success'){
 			alert("registered! click Ok to go to home");
-			window.location = '/';
+			window.location = '/#logtab';
 		}
 		else{
-			alert("check form bro!");
+			alert(reg_status);
+			console.log(status)
+			console.log(reg_status)
 		}
 		
 	});
 });
 
 $('#lbtn').click(function(){
-var form_data = {
-			'username': $('#id_username').val(),
-			'passwd': $('#id_password').val()
+var form_data1 = {
+	    'usrname': $('#id_usrname').val(),
+		'passwd': $('#id_passwd').val(),
+        'csrfmiddlewaretoken' : $('[name="csrfmiddlewaretoken"]').val()
 		}
-		$.post('/userlogin/', form_data, function (data, status) {
+		$.post('/userlogin/', form_data1, function (data, status) {
 			//console.log(data)
 			var dt = JSON.parse(data);
 			var login_status = dt.data.status;
@@ -99,10 +105,7 @@ var form_data = {
 				alert("Logged In. Click Ok to go to Home");
 				window.location = '/';
 			}
-			else {
-				//console.log(login_status);
-				$('#msg').html(login_status + '\n Login Again!!');
-			}
+			
 		});
 });
 
